@@ -1,0 +1,17 @@
+Weighted item drops
+
+Enemy-specific drop tables
+
+Status effects (temporary buffs)
+
+moving enemies
+
+enemy drops
+
+xp system
+
+projectile system
+
+optimize collisions
+
+enemy that rushes at u then sticks to u and drains ur hp for a bit then jumps back stops and charges up again
