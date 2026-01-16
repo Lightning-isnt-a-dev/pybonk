@@ -15,3 +15,15 @@ projectile system
 optimize collisions
 
 enemy that rushes at u then sticks to u and drains ur hp for a bit then jumps back stops and charges up again
+
+powerup description on mouse over
+
+explosive bullets
+
+piercing projects
+
+enemy that fires at you
+
+invincible pacman mode
+
+shield so enemy can't stick to you until it drains, regenerates after not taking damage for a while
