@@ -15,8 +15,8 @@ class Player:
         self.proj_spd      = 250
         self.proj_life     = 2
         self.proj_radius   = 5
-        self.dash_cooldown = 100
-        self.dash_distance = 100
+        self.dash_cooldown = 0  #s
+        self.dash_timer    = 0  #s
         
         
     def take_damage(self, dmg):
@@ -41,7 +41,19 @@ class Player:
         self.screen_width  = screen_width
         self.screen_height = screen_height
 
-    def update(self, dt, keys):
+    def update(self, dt, keys): 
+        if self.dash_cooldown > 0:
+            self.dash_cooldown -= dt
+            
+        if self.dash_timer > 0:
+            if self.dash_timer - dt <= 0: # end of dash
+                self.dash_timer = 0
+                self.speed /= 5
+                
+            else:
+                self.dash_timer -= dt # continue dashing
+
+                                  
         if keys[pygame.K_w]:
             self.pos.y -= self.speed * dt
         if keys[pygame.K_s]:
@@ -55,28 +67,42 @@ class Player:
         if drawPlayer:
             pygame.draw.circle(
                 screen, "purple",
-                (self.screen_width // 2, self.screen_height // 2),
+                (self.screen_width // 2,
+                 self.screen_height // 2),
                 self.radius
             )
             
         if drawHealth:
             pygame.draw.rect(
                 screen, "white",
-                rect=(pygame.Rect(self.screen_width // 2 - self.max_health // 2, self.screen_height // 2 - self.radius - 20, self.max_health, self.radius / 2)),
+                rect=(pygame.Rect(self.screen_width // 2 - self.max_health // 2,
+                                  self.screen_height // 2 - self.radius - 20,
+                                  self.max_health,
+                                  self.radius / 2)),
             )
             
             pygame.draw.rect(
                 screen, "red",
-                rect=(pygame.Rect(self.screen_width // 2 - self.max_health // 2, self.screen_height // 2 - self.radius - 20, self.health, self.radius / 2)),
+                rect=(pygame.Rect(self.screen_width // 2 - self.max_health // 2,
+                                  self.screen_height // 2 - self.radius - 20,
+                                  self.health,
+                                  self.radius / 2)),
             )
         
         if self.dash_cooldown > 0 and drawDashCooldown:
             pygame.draw.rect(
                 screen, "white",
-                rect=(pygame.Rect(self.screen_width // 2 - self.dash_cooldown // 4, self.screen_height // 2 + self.radius + 10, self.dash_cooldown // 2, self.radius // 3)),
+                rect=(pygame.Rect(self.screen_width // 2 - self.dash_cooldown * 10 // 2, 
+                                  self.screen_height // 2 + self.radius + 10, 
+                                  self.dash_cooldown * 10, 
+                                  self.radius // 3)),
             )
         
-    def dash(self):
+        elif self.dash_cooldown <= 0:
+            self.dash_cooldown -= 0.1
         
-        pass
+    def dash(self, dt):
+        if self.dash_cooldown <= 0:
+            self.dash_cooldown = 30
+            return
 

@@ -14,7 +14,7 @@ class Enemy:
         # spawn relative to entity
         angle = random.uniform(0, 360)
         screen_radius = pygame.Vector2(screen_width//2, screen_height//2).length()
-        distance = screen_radius + self.type.radius #+ entity.radius
+        distance = screen_radius + self.type.radius
         offset = pygame.Vector2(distance, 0).rotate(angle)
         self.pos = entity.pos + offset
 
