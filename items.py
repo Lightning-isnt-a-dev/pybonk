@@ -1,3 +1,4 @@
+from tkinter import font
 import pygame
 import random
 from item_types import ItemType
@@ -7,6 +8,9 @@ class Item:
         self.type = random.choice(list(ItemType)) if not item_type else item_type
         self.pos = pos
         self.radius = 20
+        
+        font = pygame.font.SysFont("arial", self.radius)
+        self.text = font.render(self.type.description, True, "white")
 
     def apply(self, player=None):
         if player:
@@ -21,7 +25,7 @@ class Item:
                 ),
 
                 ItemType.SPEED: lambda player: setattr(
-                    player, "speed", round(player.speed * 1.03)
+                    player, "base_speed", round(player.base_speed * 1.03)
                 ),
 
                 ItemType.DAMAGE_MULT: lambda player: setattr(
@@ -57,10 +61,17 @@ class Item:
             PlayerEffects[self.type](player)
             
 
-    def draw(self, screen, camera):
+    def draw(self, screen, camera, mouse_pos):
         screen_pos = self.pos - camera
         pygame.draw.circle(
             screen, self.type.color,
             (int(screen_pos.x), int(screen_pos.y)),
             self.radius
         )
+        
+        if mouse_pos.distance_to(self.pos) < self.radius * 1.5:
+            screen.blit(
+                self.text,
+                (int(screen_pos.x - self.text.get_width() // 2),
+                 int(screen_pos.y - self.radius - self.text.get_height()))
+            )
