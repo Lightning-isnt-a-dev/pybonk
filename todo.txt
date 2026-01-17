@@ -1,18 +1,19 @@
-Weighted item drops
+Weighted item drops DONE
+Enemy-specific drop tables IDEA CHANGED
+moving enemies DONE
+enemy drops DONE
+enemy dodging DONE
+blink DONE
+sprint DONE
 
-Enemy-specific drop tables
+
+optimize collisions 
 
 Status effects (temporary buffs)
-
-moving enemies
-
-enemy drops
 
 xp system
 
 projectile system
-
-optimize collisions
 
 enemy that rushes at u then sticks to u and drains ur hp for a bit then jumps back stops and charges up again
 
