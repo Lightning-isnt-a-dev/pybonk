@@ -3,7 +3,7 @@ from resource_path import resource_path
 
 
 class Player:
-    def __init__(self, screen_width, screen_height, use_png=True):
+    def __init__(self, screen_width, screen_height, use_png=True, png_path="assets/player.png"):
         self.screen_width   = screen_width
         self.screen_height  = screen_height
         self.pos           = pygame.Vector2(0, 0)
@@ -36,12 +36,13 @@ class Player:
         self.sprint_mult    = 1.5
         
         self.drawImage      = False
-        if not use_png:
+        if use_png:
             self.drawImage      = True
             try:
-                self.image      = pygame.image.load(resource_path("assets/player.png")).convert_alpha()
+                self.image      = pygame.image.load(resource_path(png_path)).convert_alpha()
                 self.image      = pygame.transform.smoothscale(self.image, (self.radius*2, self.radius*2))
-            except:
+            except Exception as e:
+                print(e)
                 self.drawImage  = False
             
         

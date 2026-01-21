@@ -71,30 +71,30 @@ class Enemy:
 
         return drops
     
-def try_dodge(self, projectile, dt):
-    if self.dodge_cooldown > 0:
-        self.dodge_cooldown = max(0, self.dodge_cooldown - dt)
-        return False
+    def try_dodge(self, projectile, dt):
+        if self.dodge_cooldown > 0:
+            self.dodge_cooldown = max(0, self.dodge_cooldown - dt)
+            return False
+        
+        # Smaller and faster enemies dodge more easily
+        speed_factor = self.speed / 200 # the faster the enemy, the easier to dodge
+        size_factor = max(0, (25 - self.radius) / 25)  # the smaller the enemy, the easier to dodge
+        dodge_chance = min(0.6, speed_factor * 0.5 + size_factor * 0.3)  # cap at 60%
+
+        if random.random() < dodge_chance:
+            direction = projectile.pos - self.pos
+            if direction.length() != 0:
+                # randomly choose left or right dodge
+                perp = pygame.Vector2(-direction.y, direction.x) if random.random() < 0.5 else pygame.Vector2(direction.y, -direction.x)
+                perp = perp.normalize()
+
+                # dodge distance scaled by enemy size
+                size_multiplier = max(0.5, 25 / self.radius)  # smaller enemies dodge further
+                self.pos += perp * self.speed * projectile.radius * 0.1 * size_multiplier # dodge distance
     
-    # Smaller and faster enemies dodge more easily
-    speed_factor = self.speed / 200 # the faster the enemy, the easier to dodge
-    size_factor = max(0, (25 - self.radius) / 25)  # the smaller the enemy, the easier to dodge
-    dodge_chance = min(0.6, speed_factor * 0.5 + size_factor * 0.3)  # cap at 60%
+                # cooldown to avoid spamming dodge
+                self.dodge_cooldown = 0.3
 
-    if random.random() < dodge_chance:
-        direction = projectile.pos - self.pos
-        if direction.length() != 0:
-            # randomly choose left or right dodge
-            perp = pygame.Vector2(-direction.y, direction.x) if random.random() < 0.5 else pygame.Vector2(direction.y, -direction.x)
-            perp = perp.normalize()
+            return True
 
-            # dodge distance scaled by enemy size
-            size_multiplier = max(0.5, 25 / self.radius)  # smaller enemies dodge further
-            self.pos += perp * self.speed * projectile.radius * 0.1 * size_multiplier # dodge distance
- 
-            # cooldown to avoid spamming dodge
-            self.dodge_cooldown = 0.3
-
-        return True
-
-    return False
+        return False

@@ -1,6 +1,6 @@
 import pygame
 import random
-from settings import TOGGLE_SPRINT, WIDTH, HEIGHT, FPS, AUTOFIRE, FULLSCREEN, SPRINT, BLINK, SHOOT, USE_PLAYER_PNG
+from settings import PLAYER_PNG_PATH, TOGGLE_SPRINT, WIDTH, HEIGHT, FPS, AUTOFIRE, FULLSCREEN, SPRINT, BLINK, SHOOT, USE_PLAYER_PNG
 from player import Player
 from enemies import Enemy
 from projectiles import Projectile
@@ -29,7 +29,7 @@ pygame.display.set_caption("pybonk")
 pygame.font.init()
 
 # --- Game objects ---
-player = Player(screen_width, screen_height, USE_PLAYER_PNG)
+player = Player(screen_width, screen_height, USE_PLAYER_PNG, PLAYER_PNG_PATH)
 enemies = []
 items = []
 projectiles = []
@@ -95,7 +95,7 @@ while running:
             elif GameState == GameStateType.GAME_OVER:
                 if event.key == pygame.K_r:
                     # reset game
-                    player = Player(screen_width, screen_height)
+                    player = Player(screen_width, screen_height, USE_PLAYER_PNG, PLAYER_PNG_PATH)
                     enemies.clear()
                     items.clear()
                     projectiles.clear()
